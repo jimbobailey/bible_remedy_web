@@ -2,11 +2,6 @@ exports.handler = async (event) => {
   const GOOGLE_SCRIPT_URL =
     'https://script.google.com/macros/s/AKfycbwTQnJtJJ7LmYAT1UeA1kKNrxwmZswzKP4eNcMWKqIG7K10fLFiqaoYVekLKlu0vjdB/exec';
 
-  console.log('Incoming request:', {
-    method: event.httpMethod,
-    body: event.body,
-  });
-
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -20,10 +15,24 @@ exports.handler = async (event) => {
     };
   }
 
+  if (
+    !GOOGLE_SCRIPT_URL ||
+    GOOGLE_SCRIPT_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE'
+  ) {
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ok: false,
+        error: 'Google Script URL not set',
+      }),
+    };
+  }
+
   try {
     const payload = JSON.parse(event.body || '{}');
-
-    console.log('Parsed payload:', payload);
 
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
@@ -35,11 +44,6 @@ exports.handler = async (event) => {
 
     const text = await response.text();
 
-    console.log('Google response:', {
-      status: response.status,
-      body: text,
-    });
-
     return {
       statusCode: 200,
       headers: {
@@ -48,11 +52,10 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         ok: true,
         scriptStatus: response.status,
+        scriptBody: text,
       }),
     };
   } catch (error) {
-    console.error('Function error:', error);
-
     return {
       statusCode: 500,
       headers: {
