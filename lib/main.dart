@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const String FEEDBACK_URL = '/.netlify/functions/feedback';
+const String FEEDBACK_URL =
+    'https://cornerstone-companion.netlify.app/.netlify/functions/feedback';
 
 void main() {
   runApp(const CornerstoneApp());
