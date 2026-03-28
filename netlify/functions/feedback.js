@@ -1,6 +1,6 @@
 exports.handler = async (event) => {
   const GOOGLE_SCRIPT_URL =
-    'PASTE_YOUR_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE';
+    'https://script.google.com/macros/s/AKfycbwTQnJtJJ7LmYAT1UeA1kKNrxwmZswzKP4eNcMWKqIG7K10fLFiqaoYVekLKlu0vjdB/exec';
 
   if (event.httpMethod !== 'POST') {
     return {
@@ -17,7 +17,7 @@ exports.handler = async (event) => {
 
   if (
     !GOOGLE_SCRIPT_URL ||
-    GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwTQnJtJJ7LmYAT1UeA1kKNrxwmZswzKP4eNcMWKqIG7K10fLFiqaoYVekLKlu0vjdB/exec'
+    GOOGLE_SCRIPT_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE'
   ) {
     return {
       statusCode: 500,
